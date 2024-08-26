@@ -1,0 +1,41 @@
+{% extends 'libraryApp/base.html' %}
+{% block content %}
+{%load static%}
+<link rel="stylesheet" href="{% static 'libraryApp/edit_borrowed_book.css' %}">
+<div class="container mt-4" style="padding-top: 70px;">
+    <div class="card-header">
+    <h2 class="card-title">Pay Penalty</h2>
+    </div>
+    <div class="card-body">
+    <form method="post" action="{% url 'penalty_payment' penalty.pk %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="fine_amount">Penalty Amount:</label>
+            <input type="text" id="fine_amount" class="form-control" value="{{ penalty.fine_amount }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="paymentMethod">Payment Method</label>
+            <select class="form-control" id="paymentMethod" name="payment_method">
+                <option value="credit_card">Credit Card</option>
+                <option value="debit_card">Debit Card</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="cardNumber">Card Number</label>
+            <input type="text" class="form-control" id="cardNumber" name="card_number" placeholder="Enter card number">
+        </div>
+        <div class="form-group">
+            <label for="cardExpiry">Expiry Date</label>
+            <input type="text" class="form-control" id="cardExpiry" name="card_expiry" placeholder="MM/YY">
+        </div>
+        <div class="form-group">
+            <label for="cardCVC">CVC</label>
+            <input type="text" class="form-control" id="cardCVC" name="card_cvc" placeholder="CVC">
+        </div>
+        <div class="button-container">
+        <button type="submit" class="btn btn-primary">Pay Penalty</button>
+        </div>
+    </form>
+    </div>
+</div>
+{% endblock %}

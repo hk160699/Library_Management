@@ -1,0 +1,101 @@
+{% extends 'libraryApp/base.html' %}
+{% block content %}
+<div class="mt-4" style="padding-top: 70px;">
+    <div class="row mb-5">
+        <div class="col-md-3 offset-md-2">
+            <img class="card" height="300px" src="{{ book.cover_image.url }}" />
+        </div>
+        <div class="col-md-6">
+            <h2>Title: {{ book.title }}</h2>
+            <h3>ISBN: {{ book.isbn }}</h3>
+            <h4>Publication year: {{ book.publication_year }}</h4>
+            <h4>Available Copies: {{ book.available_copies }}</h4>
+            <h4>Genre: {% for genre in book.genres.all %} {{ genre.name }} {% endfor %}</h4>
+            <h4>Author: {% for author in book.authors.all %} {{ author.name }}
+            <a href="{% url 'author_detail' author.id %}" class='btn btn-success'>Author Detail</a>{% endfor %}</h4>
+            <br>
+            {% if user.role == 'librarian' %}
+            <button class="btn btn-danger" id="delete-btn" data-book-id="{{ book.id }}">Delete</button>
+            <a href="{% url 'book_update' book.id %}" class='btn btn-warning'>Update</a>
+            {% else %}
+            {% if already_borrowed %}
+            <button class="btn btn-primary" disabled>Borrow</button>
+            {% else %}
+            <button class="btn btn-primary" id="borrow-btn" data-book-id="{{ book.id }}">Borrow</button>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<!-- popup form for delete book -->
+<div id="delete-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+    <div class="popup-content" style="background:#fff; margin:80px auto; padding:20px; width:80%; max-width:600px;">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">Confirm Deletion</h5>
+            </div>
+            <div class="card-body">
+                <form id="delete-form" method="post" action="{% url 'delete' book.id %}">
+                    {% csrf_token %}
+                    <h6>Are you sure you want to delete this book?</h6>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-danger" style="margin-right: 20px;">Delete</button>
+                        <button type="button" class="btn btn-secondary" id="close-delete-popup">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById('delete-btn').addEventListener('click', function() {
+        document.getElementById('delete-popup').style.display = 'block';
+    });
+
+    document.getElementById('close-delete-popup').addEventListener('click', function() {
+        document.getElementById('delete-popup').style.display = 'none';
+    });
+</script>
+<!-- popup for borrow book -->
+<div id="borrow-popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
+    <div class="popup-content" style="background:#fff; margin:80px auto; padding:20px; width:80%; max-width:600px;">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">Confirm Borrow</h5>
+            </div>
+            <div class="card-body">
+                <form id="borrow-form" method="post" action="{% url 'borrow_book' book.id %}">
+                    {% csrf_token %}
+                    <h6>Are you sure you want to borrow this book?</h6>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-success" style="margin-right: 20px;">Yes</button>
+                        <button type="button" class="btn btn-secondary" id="close-borrow-popup">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('borrow-btn').addEventListener('click', function() {
+        document.getElementById('borrow-popup').style.display = 'block';
+    });
+
+    document.getElementById('close-borrow-popup').addEventListener('click', function() {
+        document.getElementById('borrow-popup').style.display = 'none';
+    });
+</script>
+
+{% if messages %}
+    <div class="container mt-4">
+        {% for message in messages %}
+        <div class="alert alert-primary alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

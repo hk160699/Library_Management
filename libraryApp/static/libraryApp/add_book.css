@@ -1,0 +1,29 @@
+.form-group {
+    display: flex;
+    align-items: center;
+}
+
+.form-label {
+    margin-right: 20px;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size: 16px;
+}
+.form-label-title,
+.form-label-isbn {
+    margin-right: 110px;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.form-group-label {
+    display: block;
+    margin-bottom: 15px;
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+

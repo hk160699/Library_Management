@@ -1,0 +1,30 @@
+{% extends 'libraryApp/base.html' %}
+
+{% block content %}
+    <div class="container" style="margin-top: 80px;">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header"style="background-color:#437e65;">
+                        <div class="card-title mb-0" style="font-size: 20px; color: white;">
+                            Login
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                {{ form.as_p }}
+                                </div>
+                                <div class="form-group justify-content-between align-items-center">
+                                    <button type="submit" class="btn btn-outline-primary">Login</button>
+                                    <a href="{%url 'signup'%}" class="btn btn-outline-success">Signup</a>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+{% endblock %}

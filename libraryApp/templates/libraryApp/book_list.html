@@ -1,0 +1,46 @@
+{% extends 'libraryApp/base.html' %}
+{% block content %}
+<div class="mt-4" style="padding-top: 70px;">
+    {% for book in books_list %}
+     <div class="row mb-5 book-item" style="margin: 0; padding: 0;">
+         <div class="col-md-3 offset-md-1" style="padding: 0;">
+             <img class="card" height="150px" width="150px" src="{{ book.cover_image.url }}"/> 
+         </div>
+         <div class="col-md-6" style="padding: 0;">
+             <h3>{{ book.title|capfirst }}</h3>
+         </div>
+         <div class="col-md-2" style="padding: 0;">
+            <a href="{% url 'book_detail' book.id %}" class="btn"style="background-color:#437e65; color:white;">Details</a>
+         </div>
+         </div>
+     </div>
+    {% endfor %}
+</div>
+
+    {% if page_obj.has_other_pages %}
+    <div class="pagination justify-content-center" style="padding-bottom: 10px;">
+    <div class="btn-group" role="group" aria-label="Item pagination" >
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary">&laquo;</a>
+        {% endif %}
+
+        {% for page_number in page_obj.paginator.page_range %}
+            {% if page_obj.number == page_number %}
+                <button class="btn btn-outline-primary active">
+                    <span>{{ page_number }} <span class="sr-only">(current)</span></span>
+                </button>
+            {% else %}
+                <a href="?page={{ page_number }}" class="btn btn-outline-primary">
+                    {{ page_number }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-outline-primary">&raquo;</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

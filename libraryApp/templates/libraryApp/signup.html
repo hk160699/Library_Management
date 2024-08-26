@@ -1,0 +1,27 @@
+{% extends 'libraryApp/base.html' %}
+
+{% block content %}
+    <div class="container" style="margin-top: 80px;">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="shadow mb-5 bg-white rounded">
+                    <div class="card-header" style="background-color: #437e65;">
+                        <div class="card-title mb-0" style="font-size: 20px; color: white;">
+                            Sign Up
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                {{ form.as_p }}
+                                </div>
+                                <button type="submit" class="btn" style="background-color: #437e65; color: white;">Signup</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+{% endblock %}

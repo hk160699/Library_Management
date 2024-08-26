@@ -1,0 +1,60 @@
+{% extends 'libraryApp/base.html' %}
+{% block content %}
+{%load static%}
+<link rel="stylesheet" href="{% static 'libraryApp/edit_borrowed_book.css' %}">
+
+<div class="container mt-4" style="padding-top: 40px;">
+    <div class="card-header">
+    <h2 class="card-title">Edit Borrowed Book</h2>
+    </div>
+    <div class="card-body">
+    <form method="post" action="{% url 'edit_borrowed_book' borrowed_book.id %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" class="form-control" value="{{ borrowed_book.book.title }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="isbn">ISBN:</label>
+            <input type="text" id="isbn" class="form-control" value="{{ borrowed_book.book.isbn }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="borrower_name">Borrower's Name:</label>
+            <input type="text" id="borrower_name" class="form-control" value="{{ borrowed_book.user.username }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="borrowed_date">Borrowed Date:</label>
+            <input type="date" id="borrowed_date" name="borrowed_date" class="form-control" value="{{ borrowed_book.borrowed_date|date:'Y-m-d' }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="due_date">Due Date:</label>
+            <input type="date" id="due_date" name="due_date" class="form-control" value="{{ borrowed_book.due_date|date:'Y-m-d' }}">
+        </div>
+        <div class="form-group">
+            <label for="return_date">Return Date:</label>
+            <input type="date" id="return_date" name="return_date" class="form-control" value="{{ borrowed_book.return_date|date:'Y-m-d' }}">
+        </div>
+        <div class="form-group">
+            <label for="return_status">Return Status:</label>
+            <select id="return_status" name="return_status" class="form-control">
+                <option value="False" {% if not borrowed_book.return_status %}selected{% endif %}>Not Returned</option>
+                <option value="True" {% if borrowed_book.return_status %}selected{% endif %}>Returned</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="penalty_status">Penalty Status:</label>
+            <select id="penalty_status" name="penalty_status" class="form-control">
+                <option value="Paid" {% if penalty.payment_status == 'Paid' %}selected{% endif %}>Paid</option>
+                <option value="Unpaid" {% if penalty.payment_status == 'Unpaid' %}selected{% endif %}>Unpaid</option>
+                <option value="Discard" {% if penalty.payment_status == 'Discard' %}selected{% endif %}>Discard</option>
+            </select>
+        </div>
+        <div class="button-container">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="{% url 'library_activity' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+        
+    </form>
+</div>
+</div>
+{% endblock %}

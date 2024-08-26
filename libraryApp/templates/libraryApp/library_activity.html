@@ -1,0 +1,85 @@
+{% extends 'libraryApp/base.html' %}
+{% block content %}
+<div class="container-fluid mt-2" style="padding-top: 70px;">
+    <div class="card-header" style="background-color:#437e65;">
+    <h2 class="card-title"style="color: white;">Library Activity Page</h2>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>ISBN</th>
+                    <th>Borrower's Name</th>
+                    <th>Borrowed Date</th>
+                    <th>Due Date</th>
+                    <th>Return date</th>
+                    <th>Penalty</th>
+                    <th>Return Status</th>
+                    <th>Penalty Status</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for borrowed_book in page_obj %}
+                <tr>
+                    <td>{{ borrowed_book.book.title }}</td>
+                    <td>{{ borrowed_book.book.isbn }}</td>
+                    <td>{{ borrowed_book.user.username }}</td>
+                    <td>{{ borrowed_book.borrowed_date }}</td>
+                    <td>{{ borrowed_book.due_date }}</td>
+                    <td>{{borrowed_book.return_date}}</td>
+                    <td>Rs. {{ borrowed_book.penalty.fine_amount }}</td>
+                    <td>
+                        {% if not borrowed_book.return_status %}
+                            Not Returned
+                        {% else %}
+                            Returned
+                        {% endif %}
+                    </td>
+                    <td>{{ borrowed_book.penalty.payment_status }}</td>
+                    <td>
+                        {%if borrowed_book.penalty.payment_status%}
+                        <a href="{% url 'edit_borrowed_book' borrowed_book.id %}">
+                            <i class="fa fa-pencil-alt" aria-hidden="true" style="font-size: 16px;"></i>
+                        </a>
+                        {%endif%}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="10" style="text-align: center;">No record found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if page_obj.has_other_pages %}
+<div class="pagination justify-content-center" style="padding-bottom: 10px;">
+    <div class="btn-group" role="group" aria-label="Item pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-outline-primary">&laquo;</a>
+        {% endif %}
+
+        {% for page_number in page_obj.paginator.page_range %}
+            {% if page_obj.number == page_number %}
+                <button class="btn btn-outline-primary active">
+                    <span>{{ page_number }} <span class="sr-only">(current)</span></span>
+                </button>
+            {% else %}
+                <a href="?page={{ page_number }}" class="btn btn-outline-primary">
+                    {{ page_number }}
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-outline-primary">&raquo;</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

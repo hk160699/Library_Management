@@ -1,0 +1,40 @@
+{% extends 'libraryApp/base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'libraryApp/style.css' %}">
+<div class="section-search">
+    <div class="container-fluid">
+        <div class="col-md-6 offset-md-3 mt-4 g-0">
+            <h1>Library</h1>
+            <p>A Single Source of Knowledge</p>
+            <form method="get" action="{% url 'home' %}">
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col">
+                        <input type="search" name="search" placeholder="Search for book" class="form-control form-control-borderless" value="{{ search_term }}">
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-success" style="font-size:large; font-family: serif; font-weight:bold;" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if book_list %}
+    {% for book in book_list %}
+    <div class="row mb-5 book-item" style="padding-top: 30px; margin: 0;">
+        <div class="col-md-3 offset-md-1" style="padding: 0;">
+            <img class="card" height="150px" width="150px" src="{{book.cover_image.url}}"/> 
+        </div>
+        <div class="col-md-6"style="padding: 0;">
+            <h3>{{book.title|capfirst}}</h3>
+        </div>
+        <div class="col-md-2"style="padding: 0;">
+           <a href="{% url 'book_detail' book.id %}" class="btn"style="background-color:#437e65; color:white;">Details</a>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+{% include 'libraryApp/footer.html' %}
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'libraryApp/base.html' %}
+{% block content %}
+<style>
+    h1{
+        font-family: 'Times New Roman', Times, serif;
+        color: black;
+    }
+</style>
+<div class="container mt-5" style="padding-top: 70px;">
+    <div class="row mb-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-sm p-4">
+                <div class="card-title text-center mb-4">
+                    <h1 class="display-5">Author Details</h1><hr>
+                </div>
+                <div class="card-body">
+                    <h4 class="mb-3"><strong>Name:</strong> {{ object.name }}</h4>
+                    <h5 class="mb-3"><strong>Date of Birth:</strong> {{ object.date_of_birth }}</h5>
+                    <h5 class="mb-3"><strong>Nationality:</strong> {{ object.nationality }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
