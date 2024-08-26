@@ -1,6 +1,5 @@
 from django.urls import path, re_path
 from .  import views
-from django import views as django_views
 from django.views.i18n import JavaScriptCatalog
 urlpatterns = [
 
