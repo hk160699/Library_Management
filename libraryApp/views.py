@@ -66,56 +66,8 @@ class AddBookView(LoginRequiredMixin, CreateView):
             form = AddBookForm(request.POST)
             if form.is_valid():
                 form.save()
-        return HttpResponse(status=200)
-    
-        # return HttpResponse("Here's the text of the web page.")
-        # return redirect(self.success_url)
-    
-
-# from django import forms
-    
-# class BookForm(forms.ModelForm):
-#     genre_name = forms.CharField(max_length=100, required=False)
-#     author_name = forms.CharField(max_length=100, required=False)
-
-#     class Meta:
-#         model = Book
-#         fields = ['title', 'isbn','publication_year','available_copies','cover_image','genres','authors']
-
-#     def save(self, commit=True):
-#         # First, save the book instance
-#         book = super().save(commit=False)
-
-#         # Handle Genre
-#         genre_name = self.cleaned_data.get('genre_name')
-#         if genre_name:
-#             genre, created = Genre.objects.get_or_create(name=genre_name)
-#             book.genre = genre
-
-#         # Handle Author
-#         author_name = self.cleaned_data.get('author_name')
-#         if author_name:
-#             author, created = Author.objects.get_or_create(name=author_name)
-#             book.author = author
-
-#         if commit:
-#             book.save()
-#         return book
-
-# def add_book_view(request):
-#     if request.method == 'POST':
-#         form = BookForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             # Redirect or provide success feedback
-#     else:
-#         form = BookForm()
-
-#     context = {
-#         'form': form,
-#     }
-
-    # return render(request, 'libraryApp/add_book1.html', context)
+        # return HttpResponse(status=200)
+        return redirect(self.success_url)
 
 class BookListView(ListView):
     paginate_by = 3
