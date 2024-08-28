@@ -89,6 +89,7 @@
                     {% csrf_token %}
                     {{ author_form.as_p }}
                     <input type="hidden" name="form_type" value="author_form">
+                    <p class="alert alert-warning" style="margin-bottom: 15px;">note: Saving the author will clear any unsaved book data.</p>
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary" style="margin-right: 20px;background-color:#437e65; color: white;">Save</button>
                         <button type="button" class="btn btn-secondary" id="close-author-popup">Cancel</button>
@@ -121,6 +122,7 @@
                     {% csrf_token %}
                     {{ genre_form.as_p }}
                     <input type="hidden" name="form_type" value="genre_form">
+                    <p class="alert alert-warning" style="margin-bottom: 15px;">note: Saving the genre will clear any unsaved book data.</p>
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary" style="margin-right: 20px;background-color:#437e65; color: white;">Save</button>
                         <button type="button" class="btn btn-secondary" id="close-genre-popup">Cancel</button>
