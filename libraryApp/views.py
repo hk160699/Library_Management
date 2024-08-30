@@ -1,4 +1,3 @@
-from datetime import timedelta
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render,redirect
 from django.urls import reverse, reverse_lazy
@@ -74,6 +73,9 @@ class BookListView(ListView):
     model = Book
     template_name = 'libraryApp/book_list.html'
     context_object_name = 'books_list'
+    
+    def get_queryset(self):
+        return Book.objects.all().order_by('title')
 
 class BookDetailView(DetailView):
     model = Book
@@ -193,8 +195,10 @@ def penalty_payment_view(request, pk):
     return render(request, 'libraryApp/penalty_payment.html', {'penalty': penalty})
 
 def activity_page_view(request):
+    if request.user.role != 'user':
+        raise PermissionDenied("You do not have permission to view user activity page.")
     user = request.user
-    borrowed_books = BorrowedBook.objects.filter(user=user)
+    borrowed_books = BorrowedBook.objects.filter(user=user).order_by('-borrowed_date')
     paginator = Paginator(borrowed_books,7)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -205,7 +209,7 @@ def library_activity_page(request):
     if request.user.role != 'librarian':
         raise PermissionDenied("You do not have permission to view library activity.")
     
-    borrowed_books = BorrowedBook.objects.select_related('user', 'book', 'penalty').all()
+    borrowed_books = BorrowedBook.objects.select_related('user', 'book', 'penalty').all().order_by('-borrowed_date')
     paginator = Paginator(borrowed_books,7)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
